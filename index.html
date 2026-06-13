@@ -536,18 +536,41 @@
       producto: "Impercasas Zynera",
       whatsapp: "5213314306269",
       mercadoLibre: "https://www.mercadolibre.com.mx/pagina/murtexpinturasyrecubrimientos",
-      linkSellador: "https://www.mercadolibre.com.mx/pagina/murtexpinturasyrecubrimientos",
       promo: "Consulta precio y promoción vigente por WhatsApp.",
       imperRendimientoM2PorLitro: 2,
       presentacionesImper: [
-        { nombre: "Cubeta 19 L", litros: 19 },
-        { nombre: "Cubeta 10 L", litros: 10 },
-        { nombre: "Galón 4 L", litros: 4 }
+        {
+          nombre: "Cubeta 19 L",
+          litros: 19,
+          link: "https://www.mercadolibre.com.mx/impermeabilizante-sellador-para-lluvia-murtex-5-anos-19lts/up/MLMU3757266689?pdp_filters=seller_id%3A1144233378#polycard_client=recommendations_vip-seller_items-above&reco_backend=ranker-retsys-same-seller&reco_model=rk_entity_sameseller&reco_client=vip-seller_items-above&reco_item_pos=1&reco_backend_type=low_level&reco_id=e48e1360-be2a-4b5e-bff8-32e1d797a153&wid=MLM4721765534&sid=recos"
+        },
+        {
+          nombre: "Cubeta 10 L",
+          litros: 10,
+          link: "https://www.mercadolibre.com.mx/impermeabilizante-5-anos-10-litros-elastomerico-transparente/up/MLMU717103227?pdp_filters=seller_id%3A1144233378#polycard_client=recommendations_vip-seller_items-above&reco_backend=ranker-retsys-same-seller&reco_model=rk_entity_sameseller&reco_client=vip-seller_items-above&reco_item_pos=0&reco_backend_type=low_level&reco_id=eeb5a16b-038f-4df2-86bb-cdfe90d03217&wid=MLM4670671856&sid=recos"
+        },
+        {
+          nombre: "Galón 4 L",
+          litros: 4,
+          link: "https://www.mercadolibre.com.mx/impermeabilizante-sellador-lluvia-transparente-5-anos-38lts/up/MLMU719917938?pdp_filters=seller_id%3A1144233378#polycard_client=recommendations_vip-seller_items-above&reco_backend=ranker-retsys-same-seller&reco_model=rk_entity_sameseller&reco_client=vip-seller_items-above&reco_item_pos=1&reco_backend_type=low_level&reco_id=ec496086-8a9d-4e29-9b5a-cb73c971b39c&wid=MLM4641603078&sid=recos"
+        }
       ],
       presentacionesSellador: [
-        { nombre: "Bidón 20 L", litros: 20 },
-        { nombre: "Bidón 10 L", litros: 10 },
-        { nombre: "Bidón 5 L", litros: 5 }
+        {
+          nombre: "Bidón 20 L",
+          litros: 20,
+          link: "https://www.mercadolibre.com.mx/sellador-hidrofugante-murtex-20lts-para-superficies-porosas/up/MLMU712922503"
+        },
+        {
+          nombre: "Bidón 10 L",
+          litros: 10,
+          link: "https://www.mercadolibre.com.mx/sellador-hidrofugante-murtex-10lts-para-superficies-porosas/up/MLMU712932301?pdp_filters=item_id%3AMLM2612850130#origin=share&sid=share&wid=MLM2612850130&component=banner-splinter&tracking_id=3c9edce24b02664827bf877f81a4e565&global_position=17"
+        },
+        {
+          nombre: "Bidón 5 L",
+          litros: 5,
+          link: "https://www.mercadolibre.com.mx/sellador-hidrofugante-murtex-5-lts-para-superficies-porosas/up/MLMU712923699"
+        }
       ]
     };
 
@@ -562,7 +585,8 @@
     promoText.textContent = CONFIG.promo;
     btnML.href = CONFIG.mercadoLibre;
     btnImper.href = CONFIG.mercadoLibre;
-    btnSellador.href = CONFIG.linkSellador;
+    btnSellador.href = CONFIG.mercadoLibre;
+    btnSellador.style.display = "none";
 
     function whatsappValido() {
       const numero = CONFIG.whatsapp.replace(/\D/g, "");
@@ -599,22 +623,33 @@
       }
 
       const litrosImper = Math.ceil(metros / CONFIG.imperRendimientoM2PorLitro);
-      const comboImper = mejorCombinacion(litrosImper, CONFIG.presentacionesImper);
+      const comboImper = combinacionPriorizandoGrandes(litrosImper, CONFIG.presentacionesImper);
+      const imperPrincipal = presentacionPrincipal(comboImper);
+      actualizarBotonCompra(btnImper, imperPrincipal, "Comprar impermeabilizante");
 
       let litrosSellador = 0;
       let textoSuperficie = "Lisa o bien sellada";
       let comboSellador = null;
+      let selladorPrincipal = null;
 
       if (tipo === "sin-sellar") {
         litrosSellador = Math.ceil(metros / 2);
         textoSuperficie = "Normal / Sin sellar";
-        comboSellador = mejorCombinacion(litrosSellador, CONFIG.presentacionesSellador);
+        comboSellador = combinacionPriorizandoGrandes(litrosSellador, CONFIG.presentacionesSellador);
       }
 
       if (tipo === "muy-porosa") {
         litrosSellador = Math.ceil(metros / 1);
         textoSuperficie = "Superficie nueva / Muy porosa";
-        comboSellador = mejorCombinacion(litrosSellador, CONFIG.presentacionesSellador);
+        comboSellador = combinacionPriorizandoGrandes(litrosSellador, CONFIG.presentacionesSellador);
+      }
+
+      if (comboSellador) {
+        selladorPrincipal = presentacionPrincipal(comboSellador);
+        actualizarBotonCompra(btnSellador, selladorPrincipal, "Comprar sellador");
+        btnSellador.style.display = "inline-block";
+      } else {
+        btnSellador.style.display = "none";
       }
 
       const listaImper = listaPresentaciones(comboImper);
@@ -626,14 +661,16 @@
         <p><strong>Impercasas Zynera:</strong> necesitas aproximadamente ${litrosImper} litros para ${metros} m² a dos manos.</p>
         <p>Compra sugerida de impermeabilizante:</p>
         <ul>${listaImper}</ul>
+        <p class="small-note">El botón de compra del impermeabilizante abre la presentación principal sugerida: ${imperPrincipal.nombre}.</p>
         ${comboSellador ? `
           <p><strong>Sellador de Porosidad Zynera:</strong> necesitas aproximadamente ${litrosSellador} litros a una mano, sin diluir.</p>
           <p>Compra sugerida de sellador:</p>
           <ul>${listaSellador}</ul>
+          <p class="small-note">El botón de compra del sellador abre la presentación principal sugerida: ${selladorPrincipal.nombre}.</p>
         ` : `
           <p><strong>Sellador:</strong> no se calcula adicional porque seleccionaste una superficie lisa o bien sellada.</p>
         `}
-        <p class="small-note">Este cálculo es orientativo. En superficies muy porosas, rugosas, con pérdidas o aplicación irregular puede consumirse más producto.</p>
+        <p class="small-note">Este cálculo es orientativo. Se priorizan presentaciones grandes porque normalmente convienen más por litro. En superficies muy porosas, rugosas, con pérdidas o aplicación irregular puede consumirse más producto.</p>
       `;
 
       const selladorTexto = comboSellador ? ` También necesito sellador aproximado: ${litrosSellador} L. Compra sugerida de sellador: ${comboSellador.texto}.` : " La superficie ya está lisa o bien sellada.";
@@ -641,50 +678,58 @@
       actualizarWhatsapp(mensaje);
     }
 
-    function mejorCombinacion(litrosNecesarios, presentaciones) {
-      let mejor = null;
-      const maxA = Math.ceil(litrosNecesarios / presentaciones[0].litros) + 2;
-      const maxB = Math.ceil(litrosNecesarios / presentaciones[1].litros) + 2;
-      const maxC = Math.ceil(litrosNecesarios / presentaciones[2].litros) + 2;
+    function combinacionPriorizandoGrandes(litrosNecesarios, presentaciones) {
+      const grande = presentaciones[0];
+      const mediana = presentaciones[1];
+      const chica = presentaciones[2];
 
-      for (let a = 0; a <= maxA; a++) {
-        for (let b = 0; b <= maxB; b++) {
-          for (let c = 0; c <= maxC; c++) {
-            const total = (a * presentaciones[0].litros) + (b * presentaciones[1].litros) + (c * presentaciones[2].litros);
-            if (total < litrosNecesarios) continue;
+      const combo = [
+        { ...grande, cantidad: 0 },
+        { ...mediana, cantidad: 0 },
+        { ...chica, cantidad: 0 }
+      ];
 
-            const cantidadEnvases = a + b + c;
-            const sobrante = total - litrosNecesarios;
+      let resto = litrosNecesarios;
 
-            const candidato = {
-              total,
-              sobrante,
-              cantidadEnvases,
-              items: [
-                { ...presentaciones[0], cantidad: a },
-                { ...presentaciones[1], cantidad: b },
-                { ...presentaciones[2], cantidad: c }
-              ]
-            };
+      // Primero usa la mayor cantidad posible de la presentación grande.
+      combo[0].cantidad = Math.floor(resto / grande.litros);
+      resto -= combo[0].cantidad * grande.litros;
 
-            if (
-              !mejor ||
-              candidato.sobrante < mejor.sobrante ||
-              (candidato.sobrante === mejor.sobrante && candidato.cantidadEnvases < mejor.cantidadEnvases) ||
-              (candidato.sobrante === mejor.sobrante && candidato.cantidadEnvases === mejor.cantidadEnvases && a > mejor.items[0].cantidad)
-            ) {
-              mejor = candidato;
-            }
-          }
+      // Después ajusta el resto priorizando mediana antes que varias chicas.
+      if (resto > 0) {
+        if (resto <= chica.litros) {
+          combo[2].cantidad += 1;
+        } else if (resto <= mediana.litros) {
+          combo[1].cantidad += 1;
+        } else if (resto <= mediana.litros + chica.litros) {
+          combo[1].cantidad += 1;
+          combo[2].cantidad += 1;
+        } else {
+          combo[0].cantidad += 1;
         }
       }
 
-      mejor.texto = mejor.items
-        .filter(item => item.cantidad > 0)
-        .map(item => `${item.cantidad} ${item.nombre}`)
-        .join(", ");
+      const total = combo.reduce((sum, item) => sum + (item.litros * item.cantidad), 0);
+      const sobrante = total - litrosNecesarios;
 
-      return mejor;
+      return {
+        total,
+        sobrante,
+        items: combo,
+        texto: combo
+          .filter(item => item.cantidad > 0)
+          .map(item => `${item.cantidad} ${item.nombre}`)
+          .join(", ")
+      };
+    }
+
+    function presentacionPrincipal(combo) {
+      return combo.items.find(item => item.cantidad > 0) || combo.items[0];
+    }
+
+    function actualizarBotonCompra(boton, presentacion, textoBase) {
+      boton.href = presentacion.link;
+      boton.textContent = `${textoBase} (${presentacion.nombre})`;
     }
 
     function listaPresentaciones(combo) {
@@ -698,6 +743,11 @@
       document.getElementById("metros").value = "";
       document.getElementById("superficie").value = "sellada";
       document.getElementById("resultado").style.display = "none";
+      btnImper.href = CONFIG.mercadoLibre;
+      btnImper.textContent = "Comprar impermeabilizante";
+      btnSellador.href = CONFIG.mercadoLibre;
+      btnSellador.textContent = "Comprar sellador";
+      btnSellador.style.display = "none";
       actualizarWhatsapp();
     }
 
