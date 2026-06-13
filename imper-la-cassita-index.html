@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Imper La Cassita | Instructivo de aplicación</title>
+
+  <style>
+    :root {
+      --primary: #7a1f3d;
+      --primary-dark: #4b1025;
+      --accent: #f4b000;
+      --bg: #f7f7f7;
+      --card: #ffffff;
+      --text: #1f1f1f;
+      --muted: #666666;
+      --danger: #b42318;
+      --ok: #157347;
+      --border: #e4e4e4;
+      --shadow: 0 8px 24px rgba(0,0,0,.08);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: #fff;
+      padding: 34px 18px 28px;
+      text-align: center;
+    }
+
+    .hero .brand {
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      opacity: .9;
+      margin-bottom: 8px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 31px;
+      line-height: 1.05;
+    }
+
+    .hero p {
+      max-width: 620px;
+      margin: 12px auto 0;
+      font-size: 16px;
+      opacity: .95;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 18px;
+    }
+
+    .badge {
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.24);
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+    }
+
+    main {
+      width: min(980px, 100%);
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .alert {
+      border-left: 6px solid var(--accent);
+      background: #fff8e5;
+      box-shadow: none;
+    }
+
+    .alert strong {
+      color: #5a3900;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 23px;
+      color: var(--primary-dark);
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    p {
+      margin: 8px 0;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .step {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      background: #fff;
+    }
+
+    .step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--primary);
+      color: #fff;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .step strong {
+      color: var(--primary-dark);
+    }
+
+    .calculator {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: end;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 13px 12px;
+      border: 1px solid #d0d0d0;
+      border-radius: 12px;
+      font-size: 16px;
+      background: #fff;
+    }
+
+    button, .btn {
+      appearance: none;
+      border: none;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      display: inline-block;
+      transition: transform .08s ease, opacity .2s ease;
+    }
+
+    button:active, .btn:active {
+      transform: scale(.98);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: #1f1f1f;
+    }
+
+    .btn-whatsapp {
+      background: #25D366;
+      color: #0b2c16;
+    }
+
+    .btn-light {
+      background: #eeeeee;
+      color: #222;
+    }
+
+    .result {
+      margin-top: 14px;
+      background: #f1f7f3;
+      border: 1px solid #cae8d3;
+      border-radius: 16px;
+      padding: 14px;
+      display: none;
+    }
+
+    .result strong {
+      color: var(--ok);
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .mini {
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .mini .big {
+      font-size: 22px;
+      font-weight: bold;
+      color: var(--primary-dark);
+    }
+
+    .checklist label {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 11px 0;
+      border-bottom: 1px solid #eeeeee;
+      font-weight: normal;
+    }
+
+    .checklist input {
+      width: 20px;
+      height: 20px;
+      margin-top: 1px;
+      flex: 0 0 auto;
+    }
+
+    .status {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 14px;
+      font-weight: bold;
+      background: #fff3cd;
+      color: #664d03;
+    }
+
+    .status.ready {
+      background: #d1e7dd;
+      color: #0f5132;
+    }
+
+    details {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 13px 14px;
+      background: #fff;
+      margin-top: 10px;
+    }
+
+    summary {
+      font-weight: bold;
+      cursor: pointer;
+      color: var(--primary-dark);
+    }
+
+    ul {
+      padding-left: 20px;
+      margin: 8px 0;
+    }
+
+    li {
+      margin: 6px 0;
+    }
+
+    .warning-list li strong {
+      color: var(--danger);
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .promo {
+      background: linear-gradient(135deg, #fff8e5, #ffffff);
+      border: 1px dashed #d9a300;
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      padding: 20px 10px 35px;
+    }
+
+    .small-note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    @media (max-width: 760px) {
+      .steps,
+      .calculator,
+      .mini-grid,
+      .buttons {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      main {
+        padding: 14px;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+  <header class="hero">
+    <div class="brand">Instructivo rápido de aplicación</div>
+    <h1>Imper La Cassita</h1>
+    <p>Impermeabilizante acrílico elastomérico base agua. Para lograr mejor duración, la clave no es solo el producto: también importa preparar, sellar y aplicar correctamente.</p>
+
+<div class="badge-row">
+  <span class="badge">Calidad 5 años</span>
+  <span class="badge">Base agua</span>
+  <span class="badge">Alta elasticidad</span>
+  <span class="badge">Blanco / Rojo óxido / Transparente</span>
+</div>
+
+  </header>
+
+  <main>
+    <section class="card alert">
+      <strong>Antes de aplicar:</strong>
+      si la superficie tiene polvo, humedad, lama, hongo, partes flojas o impermeabilizante viejo mal adherido, no apliques todavía. Primero limpia, deja secar y sella.
+    </section>
+
+<section class="card">
+  <h2>La forma correcta en 3 pasos</h2>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Preparar</h3>
+      <p>La superficie debe quedar limpia, firme y seca. Retira polvo, tierra, partes flojas, lodo, hongo o impermeabilizante viejo mal pegado.</p>
+      <p><strong>Si lavaste con agua:</strong> espera 24 horas o hasta que esté completamente seco.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Sellar</h3>
+      <p>Aplica Sellador de Porosidad sin diluir sobre la superficie limpia y seca.</p>
+      <p><strong>¿Para qué sirve?</strong> Para saturar el material poroso y evitar que la superficie siga “chupando” humedad.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Aplicar 2 manos</h3>
+      <p>Después del sellador, aplica 2 manos de Imper La Cassita sin diluir.</p>
+      <p><strong>Las 2 manos crean la capa impermeable.</strong> La absorción ya se controló antes con el sellador.</p>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Calculadora de rendimiento</h2>
+  <p>Escribe cuántos metros cuadrados tienes y te diremos una compra aproximada.</p>
+
+  <div class="calculator">
+    <div>
+      <label for="metros">Metros cuadrados a cubrir</label>
+      <input id="metros" type="number" min="1" placeholder="Ej. 50" />
+    </div>
+
+    <div>
+      <label for="superficie">Tipo de superficie</label>
+      <select id="superficie">
+        <option value="1">Lisa o bien sellada</option>
+        <option value="1.15">Normal / porosa</option>
+        <option value="1.35">Muy rugosa o absorbente</option>
+      </select>
+    </div>
+
+    <button class="btn-primary" onclick="calcular()">Calcular producto</button>
+    <button class="btn-light" onclick="limpiarCalculo()">Limpiar</button>
+  </div>
+
+  <div id="resultado" class="result"></div>
+
+  <div class="mini-grid">
+    <div class="mini">
+      <div class="big">19 L</div>
+      <div>Cubeta grande</div>
+    </div>
+    <div class="mini">
+      <div class="big">10 L</div>
+      <div>Cubeta mediana</div>
+    </div>
+    <div class="mini">
+      <div class="big">4 L</div>
+      <div>Galón</div>
+    </div>
+  </div>
+
+  <p class="small-note">
+    Cálculo aproximado usando rendimiento recomendado de 1 m² por litro para el sistema. El consumo puede aumentar por textura, absorción, pérdidas o aplicación irregular.
+  </p>
+</section>
+
+<section class="card">
+  <h2>Checklist antes de aplicar</h2>
+  <p>Marca cada punto. Si falta alguno, es mejor corregir antes de aplicar.</p>
+
+  <div class="checklist">
+    <label>
+      <input type="checkbox" class="check" />
+      <span>Retiré polvo, tierra, basura, lodo o material suelto.</span>
+    </label>
+
+    <label>
+      <input type="checkbox" class="check" />
+      <span>Lavé la superficie si tenía suciedad, lama, hongo o grasa.</span>
+    </label>
+
+    <label>
+      <input type="checkbox" class="check" />
+      <span>Después del lavado dejé secar 24 horas o hasta que ya no hubiera humedad.</span>
+    </label>
+
+    <label>
+      <input type="checkbox" class="check" />
+      <span>Reparé grietas, fisuras, bajantes, pretiles, chaflanes, bases de tinacos o puntos críticos.</span>
+    </label>
+
+    <label>
+      <input type="checkbox" class="check" />
+      <span>Apliqué Sellador de Porosidad sobre la superficie limpia y seca.</span>
+    </label>
+
+    <label>
+      <input type="checkbox" class="check" />
+      <span>No hay lluvia próxima ni humedad excesiva.</span>
+    </label>
+  </div>
+
+  <div id="estadoChecklist" class="status">
+    Aún faltan puntos importantes antes de aplicar.
+  </div>
+</section>
+
+<section class="card">
+  <h2>Aplicación paso a paso</h2>
+
+  <details open>
+    <summary>1. Limpieza y preparación</summary>
+    <ul>
+      <li>Quita polvo, tierra, lodo y material flojo.</li>
+      <li>Si hay impermeabilizante viejo mal adherido, retíralo.</li>
+      <li>Si hay hongo o lama, lava con hidrolavadora o cepillo de cerdas duras.</li>
+      <li>Corrige zonas donde se formen charcos.</li>
+      <li>Después de lavar, deja secar completamente antes de continuar.</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>2. Sellado de superficie</summary>
+    <ul>
+      <li>Aplica Sellador de Porosidad sin diluir.</li>
+      <li>Usa brocha, cepillo, rodillo o aspersión.</li>
+      <li>Su objetivo es saturar la porosidad para que la superficie no absorba humedad ni robe desempeño al impermeabilizante.</li>
+      <li>Deja secar de 1 a 2 horas, según clima y absorción.</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>3. Primera mano de Imper</summary>
+    <ul>
+      <li>Mezcla bien el producto antes y durante la aplicación.</li>
+      <li>Aplica sin diluir.</li>
+      <li>Distribuye una capa uniforme en una sola dirección.</li>
+      <li>Deja secar antes de aplicar la segunda mano.</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>4. Segunda mano de Imper</summary>
+    <ul>
+      <li>Aplica cuando la primera mano esté seca.</li>
+      <li>En concreto, aplica en sentido cruzado respecto a la primera mano.</li>
+      <li>La segunda mano ayuda a formar una capa continua y uniforme.</li>
+      <li>Evita mojar, pisar o maltratar la superficie durante el curado.</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>5. Secado</summary>
+    <ul>
+      <li>Secado al tacto aproximado: 30 minutos.</li>
+      <li>Para segunda mano: mínimo 60 minutos si el clima ayuda.</li>
+      <li>Recomendado para mejor resultado: esperar hasta 3 horas entre manos si el clima está húmedo, nublado o la capa quedó cargada.</li>
+      <li>Curado total: 7 días.</li>
+    </ul>
+  </details>
+</section>
+
+<section class="card">
+  <h2>Errores comunes que debes evitar</h2>
+
+  <ul class="warning-list">
+    <li><strong>Aplicar sobre humedad:</strong> puede afectar la adherencia.</li>
+    <li><strong>No sellar:</strong> la superficie porosa puede absorber demasiado y reducir el desempeño.</li>
+    <li><strong>Aplicar sobre polvo:</strong> si pasas la mano y sale polvo, todavía no está lista.</li>
+    <li><strong>Aplicar con lluvia próxima:</strong> puede dañar el sistema antes de secar.</li>
+    <li><strong>Diluir de más:</strong> se recomienda aplicar sin diluir.</li>
+    <li><strong>Aplicar una sola mano:</strong> el sistema recomendado es sellador + 2 manos.</li>
+  </ul>
+</section>
+
+<section class="card">
+  <h2>Usos recomendados</h2>
+  <ul>
+    <li>Techos y azoteas de concreto.</li>
+    <li>Losas, enladrillados, prefabricados y superficies verticales.</li>
+    <li>Lámina metálica, galvanizada o pintada, siempre con preparación adecuada.</li>
+    <li>Mantenimiento de sistemas impermeables envejecidos, retirando primero lo mal adherido.</li>
+  </ul>
+
+  <p class="muted">
+    No se recomienda para pisos, terrazas, escaleras o superficies con tránsito constante.
+  </p>
+</section>
+
+<section class="card">
+  <h2>Productos recomendados</h2>
+  <ul>
+    <li><strong>Sellador de Porosidad:</strong> paso clave antes del impermeabilizante.</li>
+    <li><strong>Resanador para grietas:</strong> para fisuras, juntas o huecos antes de impermeabilizar.</li>
+    <li><strong>Membrana o malla de refuerzo:</strong> para puntos críticos como bajantes, pretiles, chaflanes, bases de tinacos o zonas con movimiento.</li>
+    <li><strong>Imper La Cassita Transparente:</strong> útil para reforzar zonas críticas antes de continuar con el sistema impermeable.</li>
+  </ul>
+</section>
+
+<section class="card promo">
+  <h2>Promoción vigente</h2>
+  <p id="promoText">Consulta precio y promoción vigente por WhatsApp.</p>
+  <p class="muted">Este texto se puede actualizar en GitHub sin cambiar el QR impreso.</p>
+</section>
+
+<section class="card">
+  <h2>¿Necesitas ayuda?</h2>
+  <p>Podemos ayudarte a calcular cuánto producto necesitas o confirmar si tu superficie ya está lista para aplicar.</p>
+
+  <div class="buttons">
+    <a id="btnWhatsapp" class="btn btn-whatsapp" href="#" target="_blank" rel="noopener">
+      Consultar por WhatsApp
+    </a>
+
+    <a id="btnML" class="btn btn-accent" href="#" target="_blank" rel="noopener" style="display:none;">
+      Comprar en Mercado Libre
+    </a>
+  </div>
+</section>
+
+  </main>
+
+  <footer class="footer">
+    Imper La Cassita · Instructivo rápido de aplicación · Lee siempre las indicaciones del envase antes de usar.
+  </footer>
+
+  <script>
+    /*
+      CAMBIA SOLO ESTOS DATOS CUANDO LO NECESITES
+      - whatsapp: escribe el número con lada de México. Ejemplo: 5213312345678
+      - mercadoLibre: pega aquí el link de Mercado Libre si ya lo tienes.
+      - promo: cambia aquí la promoción vigente.
+    */
+
+    const CONFIG = {
+      producto: "Imper La Cassita",
+      whatsapp: "5213314306269",
+      mercadoLibre: "https://www.mercadolibre.com.mx/pagina/murtexpinturasyrecubrimientos",
+      promo: "Consulta precio y promoción vigente por WhatsApp.",
+      rendimientoM2PorLitro: 1,
+      presentaciones: [
+        { nombre: "Cubeta 19 L", litros: 19 },
+        { nombre: "Cubeta 10 L", litros: 10 },
+        { nombre: "Galón 4 L", litros: 4 }
+      ]
+    };
+
+    const promoText = document.getElementById("promoText");
+    const btnWhatsapp = document.getElementById("btnWhatsapp");
+    const btnML = document.getElementById("btnML");
+    const checks = document.querySelectorAll(".check");
+    const estadoChecklist = document.getElementById("estadoChecklist");
+
+    promoText.textContent = CONFIG.promo;
+
+    if (CONFIG.mercadoLibre && CONFIG.mercadoLibre.trim() !== "") {
+      btnML.href = CONFIG.mercadoLibre;
+      btnML.style.display = "inline-block";
+    }
+
+    function whatsappValido() {
+      const numero = CONFIG.whatsapp.replace(/\D/g, "");
+      return numero.length >= 12 && !numero.includes("000000");
+    }
+
+    function actualizarWhatsapp(mensajeExtra = "") {
+      if (!whatsappValido()) {
+        btnWhatsapp.href = "#";
+        btnWhatsapp.textContent = "WhatsApp por configurar";
+        btnWhatsapp.onclick = function(e) {
+          e.preventDefault();
+          alert("Falta configurar el número de WhatsApp dentro del HTML.");
+        };
+        return;
+      }
+
+      const mensaje = mensajeExtra || `Hola, quiero información sobre ${CONFIG.producto}.`;
+      const url = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(mensaje)}`;
+      btnWhatsapp.href = url;
+      btnWhatsapp.textContent = "Consultar por WhatsApp";
+      btnWhatsapp.onclick = null;
+    }
+
+    function calcular() {
+      const metros = parseFloat(document.getElementById("metros").value);
+      const factor = parseFloat(document.getElementById("superficie").value);
+      const resultado = document.getElementById("resultado");
+
+      if (!metros || metros <= 0) {
+        resultado.style.display = "block";
+        resultado.innerHTML = "Escribe primero los metros cuadrados que quieres cubrir.";
+        return;
+      }
+
+      const litrosNecesarios = Math.ceil((metros / CONFIG.rendimientoM2PorLitro) * factor);
+      const combo = mejorCombinacion(litrosNecesarios);
+      const totalLitros = combo.total;
+      const sobrante = totalLitros - litrosNecesarios;
+      const coberturaAprox = Math.floor(totalLitros / factor);
+
+      let lista = "";
+      combo.items.forEach(item => {
+        if (item.cantidad > 0) {
+          lista += `<li>${item.cantidad} × ${item.nombre}</li>`;
+        }
+      });
+
+      resultado.style.display = "block";
+      resultado.innerHTML = `
+        <p><strong>Necesitas aproximadamente ${litrosNecesarios} litros.</strong></p>
+        <p>Compra sugerida:</p>
+        <ul>${lista}</ul>
+        <p>Total aproximado comprado: <strong>${totalLitros} litros</strong>.</p>
+        <p>Cobertura aproximada con esa compra: <strong>${coberturaAprox} m²</strong>.</p>
+        ${sobrante > 0 ? `<p class="muted">Te sobran aproximadamente ${sobrante} litros como margen por absorción o retoques.</p>` : ""}
+        <p class="small-note">Este cálculo es orientativo. En superficies muy porosas, rugosas o mal selladas puede consumirse más producto.</p>
+      `;
+
+      const mensaje = `Hola, tengo aproximadamente ${metros} m² para aplicar ${CONFIG.producto}. La calculadora me sugiere ${litrosNecesarios} litros y una compra aproximada de: ${combo.texto}. ¿Me ayudan a confirmar mi pedido?`;
+      actualizarWhatsapp(mensaje);
+    }
+
+    function mejorCombinacion(litrosNecesarios) {
+      const sizes = CONFIG.presentaciones;
+      let mejor = null;
+
+      const max19 = Math.ceil(litrosNecesarios / 19) + 2;
+      const max10 = Math.ceil(litrosNecesarios / 10) + 2;
+      const max4 = Math.ceil(litrosNecesarios / 4) + 2;
+
+      for (let a = 0; a <= max19; a++) {
+        for (let b = 0; b <= max10; b++) {
+          for (let c = 0; c <= max4; c++) {
+            const total = (a * 19) + (b * 10) + (c * 4);
+            if (total < litrosNecesarios) continue;
+
+            const cantidadEnvases = a + b + c;
+            const sobrante = total - litrosNecesarios;
+
+            const candidato = {
+              total,
+              sobrante,
+              cantidadEnvases,
+              items: [
+                { nombre: sizes[0].nombre, litros: 19, cantidad: a },
+                { nombre: sizes[1].nombre, litros: 10, cantidad: b },
+                { nombre: sizes[2].nombre, litros: 4, cantidad: c }
+              ]
+            };
+
+            if (
+              !mejor ||
+              candidato.sobrante < mejor.sobrante ||
+              (candidato.sobrante === mejor.sobrante && candidato.cantidadEnvases < mejor.cantidadEnvases) ||
+              (candidato.sobrante === mejor.sobrante && candidato.cantidadEnvases === mejor.cantidadEnvases && a > mejor.items[0].cantidad)
+            ) {
+              mejor = candidato;
+            }
+          }
+        }
+      }
+
+      mejor.texto = mejor.items
+        .filter(item => item.cantidad > 0)
+        .map(item => `${item.cantidad} ${item.nombre}`)
+        .join(", ");
+
+      return mejor;
+    }
+
+    function limpiarCalculo() {
+      document.getElementById("metros").value = "";
+      document.getElementById("superficie").value = "1";
+      document.getElementById("resultado").style.display = "none";
+      actualizarWhatsapp();
+    }
+
+    function actualizarChecklist() {
+      const total = checks.length;
+      const marcados = Array.from(checks).filter(c => c.checked).length;
+
+      if (marcados === total) {
+        estadoChecklist.textContent = "Listo: la superficie está preparada para continuar con la aplicación.";
+        estadoChecklist.classList.add("ready");
+      } else {
+        estadoChecklist.textContent = `Aún faltan ${total - marcados} punto(s) importante(s) antes de aplicar.`;
+        estadoChecklist.classList.remove("ready");
+      }
+    }
+
+    checks.forEach(check => {
+      check.addEventListener("change", actualizarChecklist);
+    });
+
+    actualizarWhatsapp();
+    actualizarChecklist();
+  </script>
+
+</body>
+</html>
